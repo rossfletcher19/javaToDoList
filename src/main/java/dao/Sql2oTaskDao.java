@@ -5,6 +5,7 @@ import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
 import org.sql2o.Connection;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -20,15 +21,20 @@ public class Sql2oTaskDao implements TaskDao {
 
     @Override
     public void add(Task task) {
-        String sql = "INSERT INTO tasks (description) VALUES (:description)";
-        try(Connection con = sql2o.open()){
-            int id = (int) con.createQuery(sql)
-                    .bind(task)
-                    .executeUpdate()
-                    .getKey();
-            task.setId(id);
+
+        String sql = "INSERT INTO tasks (description, categoryId) VALUES (:description, :categoryId)"; //raw sql
+        try(Connection con = sql2o.open()){ //try to open a connection
+            int id = (int) con.createQuery(sql) //make a new variable
+                    .addParameter("description", task.getDescription())
+                    .addParameter("categoryId", task.getCategoryId())
+                    .addColumnMapping("DESCRIPTION", "description")
+                    .addColumnMapping("CATEGORYID", "categoryId")
+                    .addColumnMapping("CREATEDAT", "createdAt")
+                    .executeUpdate() //run it all
+                    .getKey(); //int id is now the row number (row “key”) of db
+            task.setId(id); //update object to set id now from database
         } catch (Sql2oException ex) {
-            System.out.println(ex);
+            System.out.println(ex); //oops we have an error!
         }
     }
 
@@ -50,7 +56,7 @@ public class Sql2oTaskDao implements TaskDao {
     }
 
     @Override
-    public void update(int id, String newDescription) {
+    public void update(int id, String newDescription, int categoryId) {
         String sql = "UPDATE tasks SET description = :description WHERE id=:id";
         try(Connection con = sql2o.open()) {
             con.createQuery(sql)

@@ -15,7 +15,7 @@ public interface TaskDao {
 
     List<Task> getAll();
 
-    void update(int id, String content);
+    void update(int id, String content, int categoryId);
 
     void deleteById(int id);
 

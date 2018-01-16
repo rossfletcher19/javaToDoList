@@ -36,7 +36,7 @@ public class Sql2oTaskDaoTest {
 
     @Test
     public void addingCourseSetsId() throws Exception {
-        Task task = new Task("mow the lawn");
+        Task task = new Task("mow the lawn", 1);
         int originalTaskId = task.getId();
         taskDao.add(task);
         assertNotEquals(originalTaskId, task.getId());
@@ -44,7 +44,7 @@ public class Sql2oTaskDaoTest {
 
     @Test
     public void existingTasksCanBeFoundById() throws Exception {
-        Task task = new Task("mow the lawn");
+        Task task = new Task("mow the lawn", 1);
         taskDao.add(task);
         Task foundTask = taskDao.findById(task.getId());
         assertEquals(task, foundTask);
@@ -52,7 +52,7 @@ public class Sql2oTaskDaoTest {
 
     @Test
     public void addedTasksAreReturnedFromGetAll() throws Exception {
-        Task task = new Task("mow the lawn");
+        Task task = new Task("mow the lawn", 1);
         taskDao.add(task);
         assertEquals(1, taskDao.getAll().size());
     }
@@ -65,16 +65,16 @@ public class Sql2oTaskDaoTest {
     @Test
     public void updateASingleTasksContent() throws Exception {
         String initialDescription = "mow the lawn";
-        Task task = new Task(initialDescription);
+        Task task = new Task(initialDescription, 1);
         taskDao.add(task);
 
-        taskDao.update(task.getId(), "brush the cat");
+        taskDao.update(task.getId(), "brush the cat", 1);
         Task updateTask = taskDao.findById(task.getId());
         assertNotEquals(initialDescription, updateTask.getDescription());
     }
 
     @Test public void deleteByIdDeletesCorrectTask() throws Exception {
-        Task task = new Task("mow the lawn");
+        Task task = new Task("mow the lawn", 1);
         taskDao.add(task);
         taskDao.deleteById(task.getId());
         assertEquals(0, taskDao.getAll().size());
@@ -82,8 +82,8 @@ public class Sql2oTaskDaoTest {
 
     @Test
     public void clearAllClearsAll() throws Exception {
-        Task task = new Task("mow the lawn");
-        Task otherTask = new Task("brush the cat");
+        Task task = new Task("mow the lawn", 1);
+        Task otherTask = new Task("brush the cat", 1);
         taskDao.add(task);
         taskDao.add(otherTask);
         int daoSize = taskDao.getAll().size();
