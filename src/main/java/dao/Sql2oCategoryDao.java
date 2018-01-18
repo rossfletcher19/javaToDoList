@@ -48,11 +48,11 @@ public class Sql2oCategoryDao implements CategoryDao {
     }
 
     @Override
-    public void update(int id, String newName){
+    public void update(int id, String newdescription){
         String sql = "UPDATE categories SET name = :name WHERE id=:id";
         try(Connection con = sql2o.open()){
             con.createQuery(sql)
-                    .addParameter("name", newName)
+                    .addParameter("description", newdescription)
                     .addParameter("id", id)
                     .executeUpdate();
         } catch (Sql2oException ex) {

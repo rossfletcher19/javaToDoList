@@ -9,11 +9,16 @@ public class Task {
     private boolean completed;
     private int id;
     private int categoryId;
+    private LocalDateTime createdAt;
+
+
 
     public Task(String description, int categoryId) {
         this.description = description;
         this.completed = false;
         this.categoryId = categoryId;
+        this.createdAt = LocalDateTime.now();
+
     }
 
     public void setDescription(String description) {
@@ -65,5 +70,13 @@ public class Task {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

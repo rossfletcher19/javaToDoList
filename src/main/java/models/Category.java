@@ -9,7 +9,7 @@ public class Category {
     private int id;
 
     public Category(String name) {
-        this.name=name;
+        this.name = name;
 
     }
 
